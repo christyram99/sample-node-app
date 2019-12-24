@@ -5,7 +5,7 @@ import utils from '../helpers/utils'
 import userDataServiceProvider from '../services/database/userDataServiceProvider'
 import md5 from 'md5'
 
-exports.signin = async (req, res, next) => {
+async function signIn (req, res, next) {
   try {
     const { username, password } = req.body
     const user = await UserDataServiceProvider.login(username, password)
@@ -67,7 +67,7 @@ exports.signin = async (req, res, next) => {
   }
 }
 
-exports.profile = async (req, res, next) => {
+async function profile (req, res, next) {
   try {
     const respData = {
       success: true,
@@ -81,7 +81,7 @@ exports.profile = async (req, res, next) => {
 }
 
 // update profile data
-exports.updateProfile = async (req, res, next) => {
+async function updateProfile (req, res, next) {
   try {
     const profileData = req.body
     const updatedUserData = await UserDataServiceProvider.updateUserById(req.user._id, profileData)
@@ -96,7 +96,7 @@ exports.updateProfile = async (req, res, next) => {
   }
 }
 
-exports.updatePassword = async (req, res, next) => {
+async function updatePassword (req, res, next) {
   try {
     const userId = req.user._id
     const password = req.body.new_password
@@ -113,8 +113,7 @@ exports.updatePassword = async (req, res, next) => {
   }
 }
 
-
-exports.updatePhone = async (req, res, next) => {
+async function updatePhone (req, res, next) {
   try {
     // we have to send otp to new mobile number
 
@@ -149,7 +148,7 @@ exports.updatePhone = async (req, res, next) => {
   }
 }
 
-exports.resetPhone = async (req, res, next) => {
+async function resetPhone (req, res, next) {
   try {
     const otpData = req.body;
     const userId = req.user._id;
@@ -177,8 +176,7 @@ exports.resetPhone = async (req, res, next) => {
 
 }
 
-
-exports.forgotPassword = async (req, res, next) => {
+async function forgotPassword (req, res, next) {
   try {
 
     const OTP = utils.getRandomOTP()
@@ -212,7 +210,7 @@ exports.forgotPassword = async (req, res, next) => {
 }
 
 
-exports.resetPassword = async (req, res, next) => {
+async function resetPassword (req, res, next) {
   try {
     const otpData = req.body;
     const userId = req.requested_user_details._id;
@@ -239,7 +237,7 @@ exports.resetPassword = async (req, res, next) => {
 }
 
 
-module.exports.updateUserProfilePic = async (req, res, next) => {
+async function updateUserProfilePic (req, res, next) {
   try {
 
     const file = req.file
@@ -279,7 +277,7 @@ module.exports.updateUserProfilePic = async (req, res, next) => {
 }
 
 
-exports.listAllUsers = async (req, res, next) => {
+async function listAllUsers (req, res, next) {
   try {
     const query = req.body
     const { skip, limit } = req.body
@@ -305,7 +303,7 @@ exports.listAllUsers = async (req, res, next) => {
   }
 }
 
-exports.createUser = async (req, res, next) => {
+async function createUser (req, res, next) {
   try {
     const userData = req.body
     userData.created_by = req.user._id
@@ -338,7 +336,7 @@ exports.createUser = async (req, res, next) => {
   }
 }
 
-exports.updateUser = async (req, res, next) => {
+async function updateUser (req, res, next) {
   try {
     const userData = req.body
     const updatedUserData = await UserDataServiceProvider.updateUserById(req.requested_user_details._id, userData)
@@ -358,7 +356,7 @@ exports.updateUser = async (req, res, next) => {
   }
 }
 
-exports.deleteUser = async (req, res, next) => {
+async function deleteUser (req, res, next) {
   try {
     const userData = req.body
     await UserDataServiceProvider.deleteUserById(userData.user_id)
@@ -372,7 +370,7 @@ exports.deleteUser = async (req, res, next) => {
   }
 }
 
-exports.listAllUsersWithFilter = async (req, res, next) => {
+async function listAllUsersWithFilter (req, res, next) {
   try {
     const { skip, limit, query = {}, sort } = req.parsedFilterParams
 
@@ -398,9 +396,6 @@ exports.listAllUsersWithFilter = async (req, res, next) => {
     next(err)
   }
 }
-
-
-
 
 async function sendOTPonforgotPassword(otpData) {
   // we have to send SMS
@@ -441,8 +436,8 @@ async function verifyOTPonforgotPassword(phoneNumber, otp) {
     verified: false,
     message: "Incorrect OTP"
   }
-
 }
+
 async function verifyOTPonUpdatePhoneNumber(phoneNumber, otp) {
 
   const query = {
@@ -469,4 +464,21 @@ async function verifyOTPonUpdatePhoneNumber(phoneNumber, otp) {
     message: "Incorrect OTP"
   }
 
+}
+
+export {
+  signIn,
+  profile,
+  updateProfile,
+  updatePassword,
+  updatePhone,
+  resetPhone,
+  resetPassword,
+  updateUserProfilePic,
+  listAllUsers,
+  createUser,
+  updateUser,
+  deleteUser,
+  listAllUsersWithFilter,
+  forgotPassword,
 }
