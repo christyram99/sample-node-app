@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "lint": "./node_modules/.bin/eslint  --fix --ignore-path .gitignore .",
     "start": "babel-node ./src/bin/www",
     "dev": "nodemon ./src/bin/www --exec babel-node",
     "seed": "babel-node ./database/seeders/index.js"
@@ -35,6 +36,12 @@
     "@babel/core": "^7.7.0",
     "@babel/node": "^7.7.0",
     "@babel/preset-env": "^7.7.1",
+    "eslint": "^7.13.0",
+    "eslint-config-standard": "^16.0.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.2",
     "faker": "^4.1.0",
     "nodemon": "^1.19.4"
   }
