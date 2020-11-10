@@ -9,18 +9,18 @@ module.exports.saveUserProfilePic = function (req, res, next) {
     },
     fileFilter: (req, file, cb) => {
       const allowMimeTypes = [
-        "image/png",
-        "image/jpg",
-        "image/jpeg",
-        "image/gif",
-        "application/octet-stream"
+        'image/png',
+        'image/jpg',
+        'image/jpeg',
+        'image/gif',
+        'application/octet-stream'
       ]
 
       if (allowMimeTypes.indexOf(file.mimetype) > -1) {
-        cb(null, true);
+        cb(null, true)
       } else {
-        cb(null, false);
-        const err = new Error('Allowed only .png, .jpg, .jpeg and .gif');
+        cb(null, false)
+        const err = new Error('Allowed only .png, .jpg, .jpeg and .gif')
         err.statusCode = 422
         return cb(err)
       }
@@ -29,7 +29,6 @@ module.exports.saveUserProfilePic = function (req, res, next) {
 
   saveUserProfilePic(req, res, (err) => {
     if (err) {
-
       if (err.code === 'LIMIT_UNEXPECTED_FILE') {
         err.statusCode = 422
         err.message = 'avatar field is required'

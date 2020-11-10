@@ -2,7 +2,7 @@ import userDataServiceProvider from '../services/database/userDataServiceProvide
 exports.emailExists = async (req, res, next) => {
   const emailExists = await userDataServiceProvider.emailExists(req.body.email)
   if (emailExists) {
-    var respData = {
+    const respData = {
       success: false,
       message: 'Account With This Email is Already Taken'
     }
@@ -16,7 +16,7 @@ exports.checkCurrentPassword = async (req, res, next) => {
   const passwordMatched = await userDataServiceProvider.checkCurrentPassword(req.user._id, req.body.current_password)
 
   if (!passwordMatched) {
-    var respData = {
+    const respData = {
       success: false,
       message: 'Current password is wrong'
     }
@@ -28,7 +28,6 @@ exports.checkCurrentPassword = async (req, res, next) => {
 }
 
 exports.checkPhoneNumberExist = async (req, res, next) => {
-
   const isNewPhone = req.user.phone_number !== req.body.phone_number
 
   if (!isNewPhone) {

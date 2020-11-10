@@ -53,12 +53,12 @@ const UserSchema = new Schema(
       type: String
     }
   }, {
-  versionKey: false,
-  timestamps: {
-    createdAt: 'created_at',
-    updatedAt: 'updated_at'
-  }
-})
+    versionKey: false,
+    timestamps: {
+      createdAt: 'created_at',
+      updatedAt: 'updated_at'
+    }
+  })
 
 const userModel = mongoose.model('User', UserSchema, 'users')
 

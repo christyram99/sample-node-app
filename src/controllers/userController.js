@@ -139,19 +139,17 @@ async function updatePhone (req, res, next) {
 
     return res.status(200).json({
       success: true,
-      message: "OTP sent successfully"
+      message: 'OTP sent successfully'
     })
-
-  }
-  catch (error) {
+  } catch (error) {
     next(error)
   }
 }
 
 async function resetPhone (req, res, next) {
   try {
-    const otpData = req.body;
-    const userId = req.user._id;
+    const otpData = req.body
+    const userId = req.user._id
     const { verified, message } = await verifyOTPonUpdatePhoneNumber(otpData.phone_number, otpData.otp)
 
     if (!verified) {
@@ -160,25 +158,22 @@ async function resetPhone (req, res, next) {
         message
       })
     }
-    let profileData = {
+    const profileData = {
       phone_number: otpData.phone_number
     }
     await userDataServiceProvider.updateUserById(userId, profileData)
 
     res.status(200).json({
       success: true,
-      message: "OTP Verified and New Phone Number updated successfully"
+      message: 'OTP Verified and New Phone Number updated successfully'
     })
-  }
-  catch (err) {
+  } catch (err) {
     next(err)
   }
-
 }
 
 async function forgotPassword (req, res, next) {
   try {
-
     const OTP = utils.getRandomOTP()
 
     const otpData = {
@@ -187,7 +182,6 @@ async function forgotPassword (req, res, next) {
       phone_number: req.requested_user_details.phone_number,
       event: 'FORGOT_PASSWORD'
     }
-
 
     const response = await sendOTPonforgotPassword(otpData)
     if (!response.sentStatus) {
@@ -201,19 +195,17 @@ async function forgotPassword (req, res, next) {
 
     return res.status(200).json({
       success: true,
-      message: "OTP sent successfully"
+      message: 'OTP sent successfully'
     })
-  }
-  catch (err) {
+  } catch (err) {
     next(err)
   }
 }
 
-
 async function resetPassword (req, res, next) {
   try {
-    const otpData = req.body;
-    const userId = req.requested_user_details._id;
+    const otpData = req.body
+    const userId = req.requested_user_details._id
     const { verified, message } = await verifyOTPonforgotPassword(otpData.phone_number, otpData.otp)
 
     if (!verified) {
@@ -223,23 +215,19 @@ async function resetPassword (req, res, next) {
       })
     }
 
-
     const updated = await userDataServiceProvider.updateUserPasswordById(userId, otpData.new_password)
 
     res.status(200).json({
       success: true,
-      message: "OTP Verified and New password updated successfully"
+      message: 'OTP Verified and New password updated successfully'
     })
-  }
-  catch (err) {
+  } catch (err) {
     next(err)
   }
 }
 
-
 async function updateUserProfilePic (req, res, next) {
   try {
-
     const file = req.file
 
     if (!file) {
@@ -256,26 +244,23 @@ async function updateUserProfilePic (req, res, next) {
 
     await userDataServiceProvider.updateUserProfilePicById(req.user._id, filename)
 
-    let respData = {
+    const respData = {
       success: true,
-      message: "User profile pic updated successfully",
+      message: 'User profile pic updated successfully',
       data: {
         user_id: req.user._id,
         avatar: req.profile_pic_path
       }
     }
     return res.status(200).json(respData)
-  }
-  catch (error) {
+  } catch (error) {
     console.log(error)
     return res.status(error.statusCode || 500).json({
       success: false,
       message: error.message || 'Something went wrong'
     })
-
   }
 }
-
 
 async function listAllUsers (req, res, next) {
   try {
@@ -374,13 +359,12 @@ async function listAllUsersWithFilter (req, res, next) {
   try {
     const { skip, limit, query = {}, sort } = req.parsedFilterParams
 
-
     const [count = 0, users = []] = await Promise.all([
       await UserDataServiceProvider.countAllUsers(query),
       await UserDataServiceProvider.getAllUsers(query, skip, limit, sort)
     ])
 
-    const hasMore = count ? (skip + users.length) < count : false;
+    const hasMore = count ? (skip + users.length) < count : false
     const totalPages = limit ? Math.ceil(count / limit) : 1
 
     return res.json({
@@ -397,28 +381,27 @@ async function listAllUsersWithFilter (req, res, next) {
   }
 }
 
-async function sendOTPonforgotPassword(otpData) {
+async function sendOTPonforgotPassword (otpData) {
   // we have to send SMS
-  let smsBody = comminicationConstants.sms.forgot_pwd_otp.ENG;
+  let smsBody = comminicationConstants.sms.forgot_pwd_otp.ENG
 
   smsBody = smsBody.replace('##OTP##', otpData.otp.toString())
   return smsAPIServiceProvider.sendSMS(otpData.phone_number, smsBody)
 }
 
-async function sendOTPonUpdatePhoneNumber(otpData) {
-  let smsBody = comminicationConstants.sms.reset_phone_otp.ENG;
+async function sendOTPonUpdatePhoneNumber (otpData) {
+  let smsBody = comminicationConstants.sms.reset_phone_otp.ENG
   smsBody = smsBody.replace('##OTP##', otpData.otp.toString())
   return smsAPIServiceProvider.sendSMS(otpData.phone_number, smsBody)
 }
 
-async function verifyOTPonforgotPassword(phoneNumber, otp) {
-
+async function verifyOTPonforgotPassword (phoneNumber, otp) {
   const query = {
     created_at: { $gte: new Date().getLastMinutesTime(15) },
     phone_number: phoneNumber,
     event: 'FORGOT_PASSWORD'
   }
-  const skip = 0, limit = 0;
+  const skip = 0; const limit = 0
   const sort = { _id: -1 }
 
   const otpList = await OtpDataServiceProvider.getAllOtps(query, skip, limit, sort)
@@ -428,24 +411,23 @@ async function verifyOTPonforgotPassword(phoneNumber, otp) {
   if (matchedIndex > -1) {
     return {
       verified: true,
-      message: "OTP verified with phone number"
+      message: 'OTP verified with phone number'
     }
   }
 
   return {
     verified: false,
-    message: "Incorrect OTP"
+    message: 'Incorrect OTP'
   }
 }
 
-async function verifyOTPonUpdatePhoneNumber(phoneNumber, otp) {
-
+async function verifyOTPonUpdatePhoneNumber (phoneNumber, otp) {
   const query = {
     created_at: { $gte: new Date().getLastMinutesTime(15) },
     phone_number: phoneNumber,
     event: 'UPDATE_PHONE'
   }
-  const skip = 0, limit = 0;
+  const skip = 0; const limit = 0
   const sort = { _id: -1 }
 
   const otpList = await OtpDataServiceProvider.getAllOtps(query, skip, limit, sort)
@@ -455,15 +437,14 @@ async function verifyOTPonUpdatePhoneNumber(phoneNumber, otp) {
   if (matchedIndex > -1) {
     return {
       verified: true,
-      message: "OTP verified with updated phone number"
+      message: 'OTP verified with updated phone number'
     }
   }
 
   return {
     verified: false,
-    message: "Incorrect OTP"
+    message: 'Incorrect OTP'
   }
-
 }
 
 export {

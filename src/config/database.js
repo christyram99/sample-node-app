@@ -1,17 +1,18 @@
 import mongoose from 'mongoose'
 
-import config from "./app.js"
+import config from './app.js'
 
 class Database {
-  constructor() {
+  constructor () {
     this._connect()
   }
-  _connect() {
+
+  _connect () {
     mongoose.connect(config.db.mongo_connection_string, {
-        useCreateIndex: true,
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-      })
+      useCreateIndex: true,
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    })
       .then(() => {
         console.log('Database connection successful')
       })
@@ -21,4 +22,4 @@ class Database {
   }
 }
 
-export default new Database();
+export default new Database()

@@ -5,7 +5,7 @@ import userDataServiceProvider from '../services/database/userDataServiceProvide
 
 exports.checkAuthHeader = function (req, res, next) {
   if (!req.headers.authorization) {
-    var respData = {
+    const respData = {
       success: false,
       message: 'No Authorization Token'
     }
@@ -24,7 +24,7 @@ exports.validateAccessToken = async (req, res, next) => {
     const user = await userDataServiceProvider.getUserByUsername(userDetails.username)
 
     if (!user) {
-      let respData = {
+      const respData = {
         success: false,
         message: 'Invalid Credentials!'
       }
@@ -66,7 +66,7 @@ exports.isSuperAdmin = (req, res, next) => {
     !req.user ||
     !req.user.user_type ||
     req.user.user_type !== 'SUPERADMIN') {
-    var respData = {
+    const respData = {
       success: false,
       message: 'Unauthorised Access'
     }
@@ -80,7 +80,7 @@ exports.isAdmin = (req, res, next) => {
     !req.user ||
     !req.user.user_type ||
     req.user.user_type !== 'ADMIN') {
-    var respData = {
+    const respData = {
       success: false,
       message: 'Unauthorised Access'
     }

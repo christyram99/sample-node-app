@@ -1,6 +1,6 @@
-import express from 'express';
+import express from 'express'
 import authMiddleware from './../middlewares/authMiddleware'
-import { 
+import {
   signIn,
   profile,
   updateProfile,
@@ -12,19 +12,19 @@ import {
   resetPhone,
   updateUserProfilePic,
 } from './../controllers/userController'
-import schemaValidator from "./../middlewares/validations/schemaValidator"
+import schemaValidator from './../middlewares/validations/schemaValidator'
 import fileUploadMiddleware from './../middlewares/fileUploadMiddleware'
 import customValidations from './../middlewares/customValidationsMiddleware'
 const validateRequest = schemaValidator(true)
 
-const router = express.Router();
+const router = express.Router()
 
-router.post('/sign-in', 
+router.post('/sign-in',
   [
     validateRequest
-  ], 
+  ],
   signIn
-);
+)
 
 router.get('/profile',
   [
@@ -47,7 +47,7 @@ router.get('/users', [
   authMiddleware.checkAuthHeader,
   authMiddleware.validateAccessToken
 ],
-  listAllUsers,
+listAllUsers,
 )
 
 router.post('/password/update',
@@ -68,7 +68,7 @@ router.post('/password/forgot',
   forgotPassword,
 )
 
-router.post('/password/reset', 
+router.post('/password/reset',
   [
     validateRequest,
     authMiddleware.isUserExistByPhone
@@ -86,7 +86,7 @@ router.post('/phone/update',
   updatePhone,
 )
 
-router.post('/phone/reset', 
+router.post('/phone/reset',
   [
     authMiddleware.checkAuthHeader,
     authMiddleware.validateAccessToken,

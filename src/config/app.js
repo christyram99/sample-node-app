@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-const env = process.env.NODE_ENV;
+const env = process.env.NODE_ENV
 
 const dev = {
   app: {
@@ -14,7 +14,7 @@ const dev = {
   },
   jwt: {
     token_secret: 'DRXqa9r4UsjO5F0wMybN2BdTiKGmzAoL',
-    token_life: 2592000, // in seconds -  30 Days 
+    token_life: 2592000, // in seconds -  30 Days
     refresh_token_secret: 'wXyjKZpuoDsmg1MLP8CaHkfO2bUhrF6W',
     refresh_token_life: 7776000 // in seconds - 7 Days
   },
