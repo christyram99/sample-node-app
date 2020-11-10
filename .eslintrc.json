@@ -1,0 +1,13 @@
+{
+  "extends": "standard",
+  "rules": {
+    "camelcase": "off",
+    "no-unused-vars": "warn",
+    "eqeqeq": "off",
+    "no-return-await": "off",
+    "comma-dangle": "off"
+  },
+  "env": {
+    "jest": false
+  }
+}
