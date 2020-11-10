@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "babel-node ./bin/www",
-    "dev": "nodemon ./bin/www --exec babel-node",
+    "start": "babel-node ./src/bin/www",
+    "dev": "nodemon ./src/bin/www --exec babel-node",
     "seed": "babel-node ./database/seeders/index.js"
   },
   "dependencies": {
