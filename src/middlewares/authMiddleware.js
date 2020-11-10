@@ -43,7 +43,7 @@ exports.validateAccessToken = async (req, res, next) => {
 
       next()
     } catch (error) {
-      var respData = {
+      const respData = {
         success: false,
         message: error.message,
         error: error
@@ -51,8 +51,7 @@ exports.validateAccessToken = async (req, res, next) => {
       return res.status(401).json(respData)
     }
   } catch (error) {
-    console.log(error)
-    var respData = {
+    const respData = {
       success: false,
       message: 'Invalid Access Token'
     }
