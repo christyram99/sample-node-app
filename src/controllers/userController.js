@@ -70,6 +70,28 @@ async function signIn (req, res, next) {
   }
 }
 
+async function signUp (req, res, next) {
+  try {
+    const payload = req.body
+
+    const user = await UserDataServiceProvider.saveUser(payload)
+    delete user.password
+
+    const respData = {
+      success: true,
+      message: 'User created successfully',
+      data: user,
+    }
+    return res.status(201).json(respData)
+  } catch (err) {
+    if (err.code && err.code === 11000) {
+      err.message = 'Phone number already exists or Email already exists'
+      err.statusCode = 422
+    }
+    next(err)
+  }
+}
+
 async function profile (req, res, next) {
   try {
     const respData = {
@@ -291,39 +313,6 @@ async function listAllUsers (req, res, next) {
   }
 }
 
-async function createUser (req, res, next) {
-  try {
-    const userData = req.body
-    userData.created_by = req.user._id
-    // we need to add hospital code of admin
-    if (req.user.hospital_code) {
-      req.body.hospital_code = req.user.hospital_code
-    }
-    // we need to add hospital name of admin
-    if (req.user.hospital_name) {
-      req.body.hospital_name = req.user.hospital_name
-    }
-
-    const user = await UserDataServiceProvider.saveUser(userData)
-
-    // we need to remove user password form data
-
-    if (user.password) delete user.password
-    const respData = {
-      success: true,
-      message: 'User created successfully',
-      user
-    }
-    return res.status(201).json(respData)
-  } catch (err) {
-    if (err.code && err.code === 11000) {
-      err.message = 'Phone number Already Exists !'
-      err.statusCode = 422
-    }
-    next(err)
-  }
-}
-
 async function updateUser (req, res, next) {
   try {
     const userData = req.body
@@ -452,6 +441,7 @@ async function verifyOTPonUpdatePhoneNumber (phoneNumber, otp) {
 
 export {
   signIn,
+  signUp,
   profile,
   updateProfile,
   updatePassword,
@@ -460,7 +450,6 @@ export {
   resetPassword,
   updateUserProfilePic,
   listAllUsers,
-  createUser,
   updateUser,
   deleteUser,
   listAllUsersWithFilter,
