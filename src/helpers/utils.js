@@ -19,9 +19,20 @@ function get (source, key) {
   return source[key]
 }
 
+function ignoreLogging (err) {
+  // eslint-disable-next-line no-extra-boolean-cast
+  if (error.showConlseLog) {
+    console.error(error.message)
+  }
+
+  err.noLogging = true
+  err.noSentryLogging = true
+}
+
 module.exports =  {
   isBoolean,
   includes,
   has,
   get,
+  ignoreLogging,
 }
