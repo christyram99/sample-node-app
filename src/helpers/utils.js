@@ -29,7 +29,7 @@ function ignoreLogging (err) {
   err.noSentryLogging = true
 }
 
-module.exports =  {
+module.exports = {
   isBoolean,
   includes,
   has,
